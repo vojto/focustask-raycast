@@ -18,38 +18,17 @@
       "mode": "view"
     },
     {
-      "name": "upcoming",
-      "title": "Upcoming Tasks",
-      "subtitle": "Todoist",
-      "description": "See your upcoming Todoist tasks grouped by due date.",
-      "mode": "view"
-    },
-    {
       "name": "search",
-      "title": "Search Tasks",
-      "subtitle": "Todoist",
-      "description": "Search across all your Todoist tasks.",
+      "title": "Search",
+      "subtitle": "FocusTask",
+      "description": "Find anything in FocusTask",
       "mode": "view"
     },
     {
       "name": "create-task",
       "title": "Create Task",
-      "subtitle": "Todoist",
-      "description": "Create a Todoist task.",
-      "mode": "view"
-    },
-    {
-      "name": "projects",
-      "title": "Search Projects",
-      "subtitle": "Todoist",
-      "description": "See your Todoist projects and tasks by project.",
-      "mode": "view"
-    },
-    {
-      "name": "create-project",
-      "title": "Create Project",
-      "subtitle": "Todoist",
-      "description": "Create a Todoist project.",
+      "subtitle": "FocusTask",
+      "description": "Create a task in FocusTask",
       "mode": "view"
     }
   ],
@@ -58,65 +37,12 @@
       "name": "token",
       "type": "password",
       "required": true,
-      "title": "Todoist Token",
-      "description": "Your Todoist Token. Find it in Todoist integration settings view.",
-      "placeholder": "Enter your Todoist token"
-    },
-    {
-      "name": "todayGroupBy",
-      "type": "dropdown",
-      "data": [
-        {
-          "title": "Default",
-          "value": "default"
-        },
-        {
-          "title": "Project",
-          "value": "project"
-        },
-        {
-          "title": "Priority",
-          "value": "priority"
-        },
-        {
-          "title": "Label",
-          "value": "label"
-        }
-      ],
-      "default": "default",
-      "required": false,
-      "title": "Today's Group By Options",
-      "description": "Indicates how you want to group your tasks in the Today view."
-    },
-    {
-      "name": "projectGroupBy",
-      "type": "dropdown",
-      "data": [
-        {
-          "title": "Default",
-          "value": "default"
-        },
-        {
-          "title": "Date",
-          "value": "date"
-        },
-        {
-          "title": "Priority",
-          "value": "priority"
-        },
-        {
-          "title": "Label",
-          "value": "label"
-        }
-      ],
-      "default": "default",
-      "required": false,
-      "title": "Project's Group By Options",
-      "description": "Indicates how you want to group your tasks in the Project view."
+      "title": "FocusTask Token",
+      "description": "Your FocusTask Token. Find it Settings.",
+      "placeholder": "Enter your FocusTask token"
     }
   ],
   "dependencies": {
-    "@doist/todoist-api-typescript": "^1.5.0",
     "@raycast/api": "^1.35.1",
     "date-fns": "^2.28.0",
     "lodash": "^4.17.21",
