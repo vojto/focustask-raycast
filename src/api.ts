@@ -2,20 +2,28 @@ import {getPreferenceValues, showToast, Toast} from "@raycast/api"
 import {TodoistApi, TodoistRequestError} from "@doist/todoist-api-typescript"
 import fetch from "node-fetch"
 
-const root = "https://focustask-cqzm2tll6-vojto.vercel.app"
+export const getApiRoot = () => {
+  return "http://localhost:3000"
+}
 
 const preferences = getPreferenceValues()
 
-interface Task {}
+export interface Task {
+  id: string
+  deferDate: Date | null
+  title: string
+  weight: number
+  column: string
+  difficulty: string
+}
 
-export type TasksResponse = {error: string} | {tasks: Task}
+export type TasksResponse = {error: string} | {tasks: Task[]}
 
 /**
  * Returns tasks for the default frame
  */
 export const getTasks = async (): Promise<TasksResponse> => {
-  const url = `${root}/api/tasks`
-  console.log("getting tasks...", url)
+  const url = `${getApiRoot()}/api/tasks`
 
   try {
     const result = await fetch(url, {
@@ -23,8 +31,6 @@ export const getTasks = async (): Promise<TasksResponse> => {
     })
 
     const json = await result.json()
-
-    console.log("json:", json)
 
     return json as TasksResponse
   } catch (e: any) {
