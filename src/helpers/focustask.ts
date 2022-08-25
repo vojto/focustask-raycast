@@ -1,3 +1,6 @@
+import {Image} from "@raycast/api"
+import {Task} from "api/types"
+
 export const labelForTaskColumn = (column: string): string | undefined => {
   switch (column) {
     case "current":
@@ -28,4 +31,9 @@ export const iconForDifficulty = (option: string) => {
     case "generic-50":
       return "difficulty5.svg"
   }
+}
+
+export const raycastIconFromTask = (task: Task): Image | undefined => {
+  const source = iconForDifficulty(task.difficulty)
+  return source ? {source} : undefined
 }

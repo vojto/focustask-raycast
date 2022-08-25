@@ -1,20 +1,15 @@
 import {Icon, MenuBarExtra} from "@raycast/api"
-import {useCachedPromise} from "@raycast/utils"
+import {useFetchTasks} from "api/hooks"
+import {Task} from "api/types"
 import {uniq} from "lodash"
 import {useMemo} from "react"
-import {getTasks, Task} from "../../api"
 import {labelForTaskColumn} from "../../helpers/focustask"
 import {TaskItem} from "./task-item"
 
 type Item = {type: "column"; column: string} | {type: "task"; task: Task}
 
 export const Menubar = () => {
-  const {isLoading, data} = useCachedPromise(() => getTasks())
-
-  const allTasks = useMemo(
-    () => (data && "tasks" in data ? data.tasks : []),
-    [data],
-  )
+  const {isLoading, error, tasks: allTasks} = useFetchTasks()
 
   const tasks = useMemo(
     () => allTasks.filter((task) => task.column === "current"),
@@ -43,9 +38,9 @@ export const Menubar = () => {
       tooltip="Current FocusTask Tasks"
       isLoading={isLoading}
     >
-      {isLoading && !data ? (
+      {isLoading && !allTasks.length ? (
         <MenuBarExtra.Item title="Loading" />
-      ) : !data || "error" in data ? (
+      ) : error ? (
         <MenuBarExtra.Item title="Failed loading" />
       ) : (
         <>
