@@ -1,4 +1,4 @@
-import {Icon, Image, open} from "@raycast/api"
+import {Image, open} from "@raycast/api"
 import {getApiRoot} from "api/helpers"
 import {Task} from "api/types"
 

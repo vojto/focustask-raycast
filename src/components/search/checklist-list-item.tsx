@@ -1,8 +1,18 @@
 import {ActionPanel, List} from "@raycast/api"
+import {getApiRoot} from "api/helpers"
 import {Checklist} from "api/types"
+import {colorForTailwind} from "helpers/colors"
 import {FC} from "react"
 
 export const ChecklistListItem: FC<{checklist: Checklist}> = ({checklist}) => {
+  const icon = checklist.icon
+    ? `${getApiRoot()}/icons/${checklist.icon}.svg`
+    : null
+
+  const color = checklist.colorClassName
+    ? colorForTailwind(checklist.colorClassName)
+    : undefined
+
   return (
     <List.Item
       title={checklist.title}
@@ -12,7 +22,7 @@ export const ChecklistListItem: FC<{checklist: Checklist}> = ({checklist}) => {
           // maybe print the task count here?
         ]
       }
-      icon={undefined} // get the list icon?
+      icon={icon ? {source: icon, tintColor: color} : undefined}
       actions={
         <ActionPanel>
           {/* <Action.Push

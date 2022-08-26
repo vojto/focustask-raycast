@@ -10,6 +10,9 @@ export const TaskListItem: FC<{task: Task; lists: Checklist[]}> = ({
 }) => {
   const icon = iconForDifficulty(task.difficulty)
   const list = lists.find((list) => list.id === task.listId)
+  const color = list?.colorClassName
+    ? colorForTailwind(list?.colorClassName)
+    : undefined
 
   return (
     <List.Item
@@ -24,7 +27,7 @@ export const TaskListItem: FC<{task: Task; lists: Checklist[]}> = ({
         icon
           ? {
               source: icon,
-              tintColor: colorForTailwind(list?.color),
+              tintColor: color,
             }
           : undefined
       }

@@ -14,8 +14,9 @@ export interface Checklist {
   id: string
   title: string
   weight: number
-  color: string
-  icon: string
+  color: string | null
+  colorClassName: string | null
+  icon: string | null
 }
 
 export type TasksResponse = {error: string} | {tasks: Task[]}

@@ -1,4 +1,4 @@
-import {List} from "@raycast/api"
+import {List, Icon} from "@raycast/api"
 import {labelForTaskColumn} from "helpers/focustask"
 import {groupBy} from "lodash"
 import {useState} from "react"
@@ -10,9 +10,21 @@ export const SearchList = () => {
   const {isLoading, tasks} = useFetchTasks()
   const {lists} = useFetchLists()
 
-  const groups = groupBy(tasks, (task) => task.column)
-
   const [search, setSearch] = useState("")
+
+  const filteredLists = search
+    ? lists.filter((list) =>
+        list.title.toLowerCase().includes(search.toLowerCase()),
+      )
+    : lists
+
+  const filteredTasks = search
+    ? tasks.filter((task) =>
+        task.title.toLowerCase().includes(search.toLowerCase()),
+      )
+    : tasks
+
+  const groupedTasks = groupBy(filteredTasks, (task) => task.column)
 
   const placeholder = "Search for tasks and lists, or create a new task."
 
@@ -22,30 +34,23 @@ export const SearchList = () => {
       isLoading={isLoading && tasks.length === 0}
       searchText={search}
       onSearchTextChange={setSearch}
-      enableFiltering={true}
     >
       {search ? (
         <>
-          <List.Section title="Create task">
-            <List.Item title={`Create: ${search}`} />
-          </List.Section>
+          {filteredLists.map((checklist) => (
+            <ChecklistListItem checklist={checklist} key={checklist.id} />
+          ))}
 
-          <List.Section title="Lists">
-            {lists.map((checklist) => (
-              <ChecklistListItem checklist={checklist} key={checklist.id} />
-            ))}
-          </List.Section>
+          {filteredTasks.map((task) => (
+            <TaskListItem key={task.id} task={task} lists={lists} />
+          ))}
 
-          <List.Section title="Tasks">
-            {tasks.map((task) => (
-              <TaskListItem key={task.id} task={task} lists={lists} />
-            ))}
-          </List.Section>
+          <List.Item icon={Icon.Pencil} title={`Create task: ${search}`} />
         </>
       ) : (
-        Object.keys(groups).map((group) => (
+        Object.keys(groupedTasks).map((group) => (
           <List.Section title={labelForTaskColumn(group)} key={group}>
-            {groups[group].map((task) => (
+            {groupedTasks[group].map((task) => (
               <TaskListItem key={task.id} task={task} lists={lists} />
             ))}
           </List.Section>

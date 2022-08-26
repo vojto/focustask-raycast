@@ -1,7 +1,5 @@
-import colors from "tailwindcss/colors"
 import {first} from "lodash"
-
-import foo from "tailwindcss/defaultTheme"
+import colors from "tailwindcss/colors"
 
 export const blue500 = "3b82f6"
 
@@ -26,6 +24,7 @@ const colorFromClassName = (name: string | undefined) => {
 
   name = name.replace("dark:", "")
   name = name.replace("text-", "")
+  name = name.replace("fill-", "")
 
   const [color, value] = name.split("-")
 
