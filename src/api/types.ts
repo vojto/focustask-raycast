@@ -1,6 +1,7 @@
 export interface Task {
   id: string
   deferDate: Date | null
+  formattedDeferDate: string | null
   title: string
   note: string | null
   weight: number

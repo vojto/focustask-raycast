@@ -1,9 +1,8 @@
 import {ActionPanel, List} from "@raycast/api"
-import {FC} from "react"
 import {Checklist, Task} from "api/types"
-import {blue500, colorForTailwind} from "helpers/colors"
+import {colorForTailwind} from "helpers/colors"
 import {iconForDifficulty} from "helpers/focustask"
-import {getApiRoot} from "api/helpers"
+import {FC} from "react"
 
 export const TaskListItem: FC<{task: Task; lists: Checklist[]}> = ({
   task,
@@ -11,21 +10,14 @@ export const TaskListItem: FC<{task: Task; lists: Checklist[]}> = ({
 }) => {
   const icon = iconForDifficulty(task.difficulty)
   const list = lists.find((list) => list.id === task.listId)
-  const color = colorForTailwind(list?.color)
 
   return (
     <List.Item
-      title={task.title}
+      title={formatTitle(task)}
       keywords={[]}
       accessories={[
         {
           text: list?.title,
-          // icon: list?.icon
-          //   ? {
-          //       source: `${getApiRoot()}/icons/${list?.icon}.svg`,
-          //       tintColor: color,
-          //     }
-          //   : null,
         },
       ]}
       icon={
@@ -58,4 +50,12 @@ export const TaskListItem: FC<{task: Task; lists: Checklist[]}> = ({
       }
     />
   )
+}
+
+const formatTitle = (task: Task) => {
+  if (task.formattedDeferDate) {
+    return `${task.title} [${task.formattedDeferDate}]`
+  } else {
+    return task.title
+  }
 }

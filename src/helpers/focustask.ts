@@ -1,4 +1,5 @@
-import {Image} from "@raycast/api"
+import {Icon, Image, open} from "@raycast/api"
+import {getApiRoot} from "api/helpers"
 import {Task} from "api/types"
 
 export const labelForTaskColumn = (column: string): string | undefined => {
@@ -36,4 +37,9 @@ export const iconForDifficulty = (option: string) => {
 export const raycastIconFromTask = (task: Task): Image | undefined => {
   const source = iconForDifficulty(task.difficulty)
   return source ? {source} : undefined
+}
+
+export const openTask = (task: Task) => {
+  const root = getApiRoot()
+  open(`${root}/tasks/task/${task.id}`)
 }

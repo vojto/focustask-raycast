@@ -3,6 +3,7 @@ import {labelForTaskColumn} from "helpers/focustask"
 import {groupBy} from "lodash"
 import {useState} from "react"
 import {useFetchLists, useFetchTasks} from "../../api/hooks"
+import {ChecklistListItem} from "./checklist-list-item"
 import {TaskListItem} from "./task-list-item"
 
 export const SearchList = () => {
@@ -10,8 +11,6 @@ export const SearchList = () => {
   const {lists} = useFetchLists()
 
   const groups = groupBy(tasks, (task) => task.column)
-
-  console.log("groups:", Object.keys(groups))
 
   const [search, setSearch] = useState("")
 
@@ -22,14 +21,36 @@ export const SearchList = () => {
       searchBarPlaceholder={placeholder}
       isLoading={isLoading && tasks.length === 0}
       searchText={search}
+      onSearchTextChange={setSearch}
+      enableFiltering={true}
     >
-      {Object.keys(groups).map((group) => (
-        <List.Section title={labelForTaskColumn(group)}>
-          {groups[group].map((task, i) => (
-            <TaskListItem key={i} task={task} lists={lists} />
-          ))}
-        </List.Section>
-      ))}
+      {search ? (
+        <>
+          <List.Section title="Create task">
+            <List.Item title={`Create: ${search}`} />
+          </List.Section>
+
+          <List.Section title="Lists">
+            {lists.map((checklist) => (
+              <ChecklistListItem checklist={checklist} key={checklist.id} />
+            ))}
+          </List.Section>
+
+          <List.Section title="Tasks">
+            {tasks.map((task) => (
+              <TaskListItem key={task.id} task={task} lists={lists} />
+            ))}
+          </List.Section>
+        </>
+      ) : (
+        Object.keys(groups).map((group) => (
+          <List.Section title={labelForTaskColumn(group)} key={group}>
+            {groups[group].map((task) => (
+              <TaskListItem key={task.id} task={task} lists={lists} />
+            ))}
+          </List.Section>
+        ))
+      )}
     </List>
   )
 }
