@@ -1,4 +1,4 @@
-import {ActionPanel, List} from "@raycast/api"
+import {Action, ActionPanel, List} from "@raycast/api"
 import {Checklist, Task} from "api/types"
 import {colorForTailwind} from "helpers/colors"
 import {iconForDifficulty} from "helpers/focustask"
@@ -33,6 +33,11 @@ export const TaskListItem: FC<{task: Task; lists: Checklist[]}> = ({
       }
       actions={
         <ActionPanel>
+          <Action.OpenInBrowser
+            url={task.url}
+            shortcut={{modifiers: ["cmd"], key: "o"}}
+          />
+
           {/* <Action.Push
             title="Show Details"
             target={<TaskDetail taskId={task.id} />}

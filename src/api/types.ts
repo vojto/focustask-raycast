@@ -8,6 +8,7 @@ export interface Task {
   column: string
   difficulty: string
   listId: string | null
+  url: string
 }
 
 export interface Checklist {
@@ -17,6 +18,7 @@ export interface Checklist {
   color: string | null
   colorClassName: string | null
   icon: string | null
+  url: string
 }
 
 export type TasksResponse = {error: string} | {tasks: Task[]}
