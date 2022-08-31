@@ -45,7 +45,7 @@ export const SearchList = () => {
             <TaskListItem key={task.id} task={task} lists={lists} />
           ))}
 
-          <List.Item icon={Icon.Pencil} title={`Create task: ${search}`} />
+          <List.Item title={`Create task: ${search}`} />
         </>
       ) : (
         Object.keys(groupedTasks).map((group) => (
