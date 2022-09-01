@@ -1,4 +1,4 @@
-import {List, Icon} from "@raycast/api"
+import {List, Icon, Action, ActionPanel, showToast, Toast} from "@raycast/api"
 import {labelForTaskColumn} from "helpers/focustask"
 import {groupBy} from "lodash"
 import {useState} from "react"
@@ -45,7 +45,26 @@ export const SearchList = () => {
             <TaskListItem key={task.id} task={task} lists={lists} />
           ))}
 
-          <List.Item title={`Create task: ${search}`} />
+          <List.Item
+            title={`Create task: ${search}`}
+            actions={
+              <ActionPanel>
+                <Action
+                  // id="createTask"
+                  title="Create Task"
+                  icon={Icon.NewDocument}
+                  // shortcut={{modifiers: ["cmd", "shift"], key: "e"}}
+                  onAction={async () => {
+                    await showToast({
+                      style: Toast.Style.Animated,
+                      title: "Creating task",
+                    })
+                    console.log("creating task!", search)
+                  }}
+                />
+              </ActionPanel>
+            }
+          />
         </>
       ) : (
         Object.keys(groupedTasks).map((group) => (
