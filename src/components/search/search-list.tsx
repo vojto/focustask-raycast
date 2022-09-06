@@ -1,4 +1,15 @@
-import {List, Icon, Action, ActionPanel, showToast, Toast} from "@raycast/api"
+import {
+  Action,
+  ActionPanel,
+  Icon,
+  List,
+  open,
+  showHUD,
+  showToast,
+  Toast,
+} from "@raycast/api"
+import {useCachedState} from "@raycast/utils"
+import {createTask} from "api/helpers"
 import {labelForTaskColumn} from "helpers/focustask"
 import {groupBy} from "lodash"
 import {useState} from "react"
@@ -28,6 +39,22 @@ export const SearchList = () => {
 
   const placeholder = "Search for tasks and lists, or create a new task."
 
+  const handleCreate = async () => {
+    await showToast({
+      style: Toast.Style.Animated,
+      title: "Creating task",
+      message: "This should only take a moment",
+    })
+
+    const response = await createTask({title: search})
+
+    if ("id" in response) {
+      showHUD("Task created")
+    } else {
+      showHUD("Failed to create a task")
+    }
+  }
+
   return (
     <List
       searchBarPlaceholder={placeholder}
@@ -54,13 +81,7 @@ export const SearchList = () => {
                   title="Create Task"
                   icon={Icon.NewDocument}
                   // shortcut={{modifiers: ["cmd", "shift"], key: "e"}}
-                  onAction={async () => {
-                    await showToast({
-                      style: Toast.Style.Animated,
-                      title: "Creating task",
-                    })
-                    console.log("creating task!", search)
-                  }}
+                  onAction={handleCreate}
                 />
               </ActionPanel>
             }

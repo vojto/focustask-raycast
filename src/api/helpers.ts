@@ -1,6 +1,6 @@
 import {getPreferenceValues} from "@raycast/api"
 import fetch from "node-fetch"
-import {ChecklistResponse, TasksResponse} from "./types"
+import {ChecklistResponse, CreateTaskResponse, TasksResponse} from "./types"
 
 export const getApiRoot = () => {
   return "http://localhost:3000"
@@ -9,19 +9,40 @@ export const getApiRoot = () => {
 const preferences = getPreferenceValues()
 
 export const getTasks = () => {
-  return getJson<TasksResponse>("tasks")
+  return fetchJson<TasksResponse>({path: "tasks"})
+}
+
+export const createTask = (data: {title: string}) => {
+  return fetchJson<CreateTaskResponse>({
+    path: "tasks/create",
+    method: "post",
+    data,
+  })
 }
 
 export const getChecklists = () => {
-  return getJson<ChecklistResponse>("lists")
+  return fetchJson<ChecklistResponse>({path: "lists"})
 }
 
-const getJson = async <T>(path: string): Promise<T | {error: string}> => {
+const fetchJson = async <T>({
+  path,
+  method = "get",
+  data,
+}: {
+  path: string
+  method?: "get" | "post"
+  data?: Record<string, string>
+}): Promise<T | {error: string}> => {
   const url = `${getApiRoot()}/api/${path}`
 
   try {
     const result = await fetch(url, {
-      headers: {Authorization: `Token ${preferences.key}`},
+      headers: {
+        Authorization: `Token ${preferences.key}`,
+        "Content-Type": "application/json",
+      },
+      method,
+      body: data ? JSON.stringify(data) : undefined,
     })
 
     const json = await result.json()

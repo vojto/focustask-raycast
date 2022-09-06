@@ -22,4 +22,5 @@ export interface Checklist {
 }
 
 export type TasksResponse = {error: string} | {tasks: Task[]}
+export type CreateTaskResponse = {error: string} | {id: string; url: string}
 export type ChecklistResponse = {error: string} | {lists: Checklist[]}

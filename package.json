@@ -16,7 +16,7 @@
       "subtitle": "FocusTask",
       "description": "Show current tasks in the menubar",
       "mode": "menu-bar",
-      "interval": "5m"
+      "interval": "1m"
     },
     {
       "name": "current",
