@@ -17,7 +17,10 @@ export const Menubar = () => {
   console.log("menubar needs refetch:", needsRefetch)
 
   const tasks = useMemo(
-    () => allTasks.filter((task) => task.column === "current"),
+    () =>
+      allTasks
+        .filter((task) => task.visibleInDefaultFrame)
+        .filter((task) => task.column === "current"),
     [allTasks],
   )
 
@@ -50,11 +53,14 @@ export const Menubar = () => {
       ) : menuItems.length > 0 ? (
         menuItems.map((item, i) =>
           item.type === "column" ? (
-            <MenuBarExtra.Item
-              key={i}
-              title={labelForTaskColumn(item.column) ?? ""}
-              icon={item.column === "current" ? Icon.Bolt : undefined}
-            />
+            <>
+              <MenuBarExtra.Item
+                key={i}
+                title={labelForTaskColumn(item.column) ?? ""}
+                icon={item.column === "current" ? Icon.Bolt : undefined}
+              />
+              <MenuBarExtra.Separator />
+            </>
           ) : (
             <TaskItem key={i} task={item.task} />
           ),
@@ -62,6 +68,8 @@ export const Menubar = () => {
       ) : (
         <MenuBarExtra.Item title="No tasks in Current!" />
       )}
+
+      <MenuBarExtra.Separator />
 
       <MenuBarExtra.Item
         title="Open FocusTask"

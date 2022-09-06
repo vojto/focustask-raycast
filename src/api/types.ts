@@ -9,6 +9,7 @@ export interface Task {
   difficulty: string
   listId: string | null
   url: string
+  visibleInDefaultFrame: boolean
 }
 
 export interface Checklist {

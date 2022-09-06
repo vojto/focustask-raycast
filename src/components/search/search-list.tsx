@@ -3,12 +3,10 @@ import {
   ActionPanel,
   Icon,
   List,
-  open,
   showHUD,
   showToast,
   Toast,
 } from "@raycast/api"
-import {useCachedState} from "@raycast/utils"
 import {createTask} from "api/helpers"
 import {labelForTaskColumn} from "helpers/focustask"
 import {groupBy} from "lodash"
@@ -33,7 +31,7 @@ export const SearchList = () => {
     ? tasks.filter((task) =>
         task.title.toLowerCase().includes(search.toLowerCase()),
       )
-    : tasks
+    : tasks.filter((task) => task.visibleInDefaultFrame)
 
   const groupedTasks = groupBy(filteredTasks, (task) => task.column)
 
