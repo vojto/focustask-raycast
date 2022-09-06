@@ -48,7 +48,7 @@ export const Menubar = () => {
       {isLoading && !allTasks.length ? (
         <MenuBarExtra.Item title="Loading" />
       ) : error ? (
-        <MenuBarExtra.Item title="Failed loading" />
+        <MenuBarExtra.Item title={`Error: ${error}`} />
       ) : menuItems.length > 0 ? (
         menuItems.map((item, i) =>
           item.type === "column" ? (

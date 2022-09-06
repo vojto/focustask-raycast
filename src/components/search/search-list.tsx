@@ -16,7 +16,7 @@ import {ChecklistListItem} from "./checklist-list-item"
 import {TaskListItem} from "./task-list-item"
 
 export const SearchList = () => {
-  const {isLoading, tasks} = useFetchTasks()
+  const {isLoading, tasks, error} = useFetchTasks()
   const {lists} = useFetchLists()
 
   const [search, setSearch] = useState("")
@@ -69,7 +69,13 @@ export const SearchList = () => {
       searchText={search}
       onSearchTextChange={setSearch}
     >
-      {search ? (
+      {error ? (
+        <List.EmptyView
+          title="Loading failed"
+          description={error}
+          icon={Icon.Warning}
+        />
+      ) : search ? (
         <>
           {filteredLists.map((checklist) => (
             <ChecklistListItem checklist={checklist} key={checklist.id} />
