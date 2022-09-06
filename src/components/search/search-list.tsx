@@ -8,8 +8,8 @@ import {
   Toast,
 } from "@raycast/api"
 import {createTask} from "api/helpers"
-import {labelForTaskColumn} from "helpers/focustask"
-import {groupBy} from "lodash"
+import {labelForTaskColumn, orderForTaskColumn} from "helpers/focustask"
+import {groupBy, mapValues, sortBy} from "lodash"
 import {useState} from "react"
 import {useFetchLists, useFetchTasks} from "../../api/hooks"
 import {ChecklistListItem} from "./checklist-list-item"
@@ -33,7 +33,16 @@ export const SearchList = () => {
       )
     : tasks.filter((task) => task.visibleInDefaultFrame)
 
-  const groupedTasks = groupBy(filteredTasks, (task) => task.column)
+  const groupedTasks = mapValues(
+    groupBy(filteredTasks, (task) => task.column),
+    (tasks) => sortBy(tasks, (task) => task.weight),
+  )
+
+  const groupKeys = sortBy(Object.keys(groupedTasks), (key) =>
+    orderForTaskColumn(key),
+  )
+
+  const groups = groupKeys.map((key) => ({key, tasks: groupedTasks[key]}))
 
   const placeholder = "Search for tasks and lists, or create a new task."
 
@@ -86,9 +95,9 @@ export const SearchList = () => {
           />
         </>
       ) : (
-        Object.keys(groupedTasks).map((group) => (
-          <List.Section title={labelForTaskColumn(group)} key={group}>
-            {groupedTasks[group].map((task) => (
+        groups.map(({key, tasks}) => (
+          <List.Section title={labelForTaskColumn(key)} key={key}>
+            {tasks.map((task) => (
               <TaskListItem key={task.id} task={task} lists={lists} />
             ))}
           </List.Section>

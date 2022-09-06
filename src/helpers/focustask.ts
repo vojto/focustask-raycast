@@ -15,6 +15,19 @@ export const labelForTaskColumn = (column: string): string | undefined => {
   }
 }
 
+export const orderForTaskColumn = (column: string): number | undefined => {
+  switch (column) {
+    case "current":
+      return 0
+    case "next":
+      return 1
+    case "icebox":
+      return 2
+    case "deferred":
+      return 3
+  }
+}
+
 export const iconForDifficulty = (option: string) => {
   switch (option) {
     case "phoneCall":

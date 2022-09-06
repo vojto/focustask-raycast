@@ -3,7 +3,7 @@ import fetch from "node-fetch"
 import {ChecklistResponse, CreateTaskResponse, TasksResponse} from "./types"
 
 export const getApiRoot = () => {
-  return "http://localhost:3000"
+  return "https://next.focustask.app"
 }
 
 const preferences = getPreferenceValues()

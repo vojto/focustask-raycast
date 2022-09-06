@@ -12,7 +12,7 @@
   "commands": [
     {
       "name": "current-menubar",
-      "title": "Show Menubar Icon",
+      "title": "Show in Menubar",
       "subtitle": "FocusTask",
       "description": "Show current tasks in the menubar",
       "mode": "menu-bar",

@@ -1,10 +1,9 @@
 import {Icon, MenuBarExtra, open} from "@raycast/api"
-import {useCachedState} from "@raycast/utils"
 import {getApiRoot} from "api/helpers"
 import {useFetchTasks} from "api/hooks"
 import {Task} from "api/types"
-import {uniq} from "lodash"
-import {useMemo} from "react"
+import {uniq, sortBy} from "lodash"
+import {Fragment, useMemo} from "react"
 import {labelForTaskColumn} from "../../helpers/focustask"
 import {TaskItem} from "./task-item"
 
@@ -12,9 +11,6 @@ type Item = {type: "column"; column: string} | {type: "task"; task: Task}
 
 export const Menubar = () => {
   const {isLoading, error, tasks: allTasks} = useFetchTasks()
-  const [needsRefetch, setNeedsRefetch] = useCachedState("needsRefetch", false)
-
-  console.log("menubar needs refetch:", needsRefetch)
 
   const tasks = useMemo(
     () =>
@@ -29,7 +25,10 @@ export const Menubar = () => {
   const menuItems = useMemo(
     () =>
       columns.flatMap((column): Item[] => {
-        const columnTasks = tasks.filter((task) => task.column === column)
+        const columnTasks = sortBy(
+          tasks.filter((task) => task.column === column),
+          (task) => task.weight,
+        )
 
         return [
           {type: "column", column},
@@ -53,14 +52,13 @@ export const Menubar = () => {
       ) : menuItems.length > 0 ? (
         menuItems.map((item, i) =>
           item.type === "column" ? (
-            <>
+            <Fragment key={i}>
               <MenuBarExtra.Item
-                key={i}
                 title={labelForTaskColumn(item.column) ?? ""}
                 icon={item.column === "current" ? Icon.Bolt : undefined}
               />
               <MenuBarExtra.Separator />
-            </>
+            </Fragment>
           ) : (
             <TaskItem key={i} task={item.task} />
           ),
